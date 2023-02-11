@@ -34,10 +34,8 @@ class Neural_Network(nn.Module):
 
 
 def train(model, train_data, train_labels, optimizer, criterion, epochs):
-    train_data = train_data.numpy()
-    train_labels = train_labels.numpy()
-    train_data = torch.from_numpy(train_data)
-    train_labels = torch.from_numpy(train_labels)
+    train_data = torch.stack(train_data, dim=0)
+    train_labels = torch.stack(train_labels, dim=0)
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
