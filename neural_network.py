@@ -34,6 +34,8 @@ class Neural_Network(nn.Module):
 
 def pad_tensors(tensors_list):
     max_shape = max([tensor.shape for tensor in tensors_list])
+    if max_shape % 2 != 0:
+        max_shape -= 1
     padded_tensors = []
     for tensor in tensors_list:
         pad = [0] * len(max_shape)
