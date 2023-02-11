@@ -32,14 +32,21 @@ class Neural_Network(nn.Module):
         out = self.fc(out[:, -1, :])
         return out
 
+def pad_tensors(tensors_list):
+    max_shape = max([t.shape for t in tensors_list], key=lambda x: x[1])
+    padded_tensors = []
+    for tensor in tensors_list:
+        padding = torch.zeros((tensor.shape[0], max_shape[1] - tensor.shape[1], tensor.shape[2]), dtype=torch.float32)
+        padded_tensor = torch.cat((tensor, padding), dim=1)
+        padded_tensors.append(padded_tensor)
+    return padded_tensors
+
 
 def train(model, train_data, train_labels, optimizer, criterion, epochs):
-    max_length = max(t.shape[2] for t in train_data)
-    train_data = [torch.nn.functional.pad(t, (0, 0, 0, max_length - t.shape[2])) for t in train_data]
-    train_data = torch.stack(train_data, dim=0)
-    max_length = max(t.shape[2] for t in train_labels)
-    train_labels = [torch.nn.functional.pad(t, (0, 0, 0, max_length - t.shape[2])) for t in train_labels]
-    train_labels = torch.stack(train_labels, dim=0)
+    padded_train_data = pad_tensors(train_data)
+    padded_train_labels = pad_tensors(train_labels)
+    train_data = torch.stack(padded_train_data, dim=0)
+    train_labels = torch.stack(padded_train_labels, dim=0)
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
