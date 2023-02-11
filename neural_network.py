@@ -74,6 +74,6 @@ criterion = nn.CrossEntropyLoss()
 alphabet = "' abcdefghijklmnopqrstuvwxyz"
 db = data.DataBase('dataset/', alphabet, limit=100)
 print("DONE !")
-train(model, db['data'], db['label'], optimizer, criterion, epochs)
+train(model, data.db['data'], data.db['label'], optimizer, criterion, epochs)
 torch.save(model.state_dict(), 'model.pth')
 # test(model, test_data, test_labels)

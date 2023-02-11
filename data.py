@@ -9,7 +9,6 @@ import torch
 import torchaudio
 from tqdm import tqdm
 
-
 class LogMelSpec(nn.Module):
     def __init__(self, sample_rate=8000, n_mels=128, win_length=160, hop_length=80):
         super(LogMelSpec, self).__init__()
