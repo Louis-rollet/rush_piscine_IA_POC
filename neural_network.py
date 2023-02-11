@@ -61,6 +61,7 @@ epochs = 2
 learning_rate = 0.001
 
 model = Neural_Network(input_size, hidden_size, nb_layers, output_size)
+# torch.load(model.state_dict(), 'model.pth')
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 criterion = nn.CrossEntropyLoss()
 
