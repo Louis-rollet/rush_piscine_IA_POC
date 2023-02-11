@@ -6,6 +6,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
+import data
+
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+else:
+    device = torch.device('cpu')
 
 class Neural_Network(nn.Module):
     def __init__(self, input_size, hidden_size, nb_layers, output_size):
@@ -27,7 +33,7 @@ class Neural_Network(nn.Module):
 
 
 
-def train(model, train_data, train_labels, test_data, test_labels, optimizer, criterion, epochs):
+def train(model, train_data, train_labels, optimizer, criterion, epochs):
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
@@ -36,15 +42,15 @@ def train(model, train_data, train_labels, test_data, test_labels, optimizer, cr
         loss.backward()
         optimizer.step()
 
-        model.eval()
-        with torch.no_grad():
-            test_output = model(test_data)
-            test_loss = criterion(test_output, test_labels)
+        # model.eval()
+        # with torch.no_grad():
+        #     test_output = model(test_data)
+        #     test_loss = criterion(test_output, test_labels)
         if epoch % 100 == 0:
             print('Epoch: {}/{}.............'.format(epoch, epochs), end=' ')
             print("Loss: {:.4f}".format(loss.item()))
-        if test_loss > loss:
-            break
+        # if test_loss > loss:
+        #     break
 
 def test(model, test_data, test_labels):
     model.eval()
@@ -53,10 +59,10 @@ def test(model, test_data, test_labels):
         loss = criterion(output, test_labels)
     print('Test Loss: {:.4f}'.format(loss.item()))
 
-input_size = 15
+input_size = 29
 hidden_size = 128
 nb_layers = 2
-output_size = 26
+output_size = 29
 epochs = 2
 learning_rate = 0.001
 
@@ -65,6 +71,9 @@ model = Neural_Network(input_size, hidden_size, nb_layers, output_size)
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 criterion = nn.CrossEntropyLoss()
 
-train(model, train_data, train_labels, test_data, test_labels, optimizer, criterion, epochs)
+alphabet = "' abcdefghijklmnopqrstuvwxyz"
+db = data.DataBase('dataset/', alphabet, limit=100)
+print("DONE !")
+train(model, db['data'], db['label'], optimizer, criterion, epochs)
 torch.save(model.state_dict(), 'model.pth')
-test(model, test_data, test_labels)
+# test(model, test_data, test_labels)

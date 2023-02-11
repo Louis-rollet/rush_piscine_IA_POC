@@ -124,6 +124,8 @@ class DataBase:
         # self.train_data = pd.DataFrame(self.data)
 
 
-alphabet = "' abcdefghijklmnopqrstuvwxyz"
-db = DataBase('dataset/fr/', alphabet, limit=5000)
-print("DONE !")
+# alphabet = "' abcdefghijklmnopqrstuvwxyz"
+# db = DataBase('dataset/fr/', alphabet, limit=100)
+# print("DONE !")
+# print(db.data['data'][0])
+# print(db.data['label'][0])
