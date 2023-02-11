@@ -125,7 +125,7 @@ class DataBase:
 
 
 # alphabet = "' abcdefghijklmnopqrstuvwxyz"
-# db = DataBase('dataset/fr/', alphabet, limit=100)
+# db = DataBase('dataset/fr/', alphabet, limit=1000)
 # print("DONE !")
 # print(db.data['data'][0])
 # print(db.data['label'][0])
