@@ -36,9 +36,10 @@ def pad_tensors(tensors_list):
     max_shape = max([tensor.shape for tensor in tensors_list])
     padded_tensors = []
     for tensor in tensors_list:
-        padding = torch.zeros((tensor.shape[0], max_shape[1] - tensor.shape[1], tensor.shape[2]), dtype=torch.float32)
-        padded_tensor = torch.cat((tensor, padding), dim=1)
-        padded_tensors.append(padded_tensor)
+        pad = [0] * len(max_shape)
+        for i, s in enumerate(tensor.shape):
+            pad[i] = max_shape[i] - s
+        padded_tensors.append(F.pad(tensor, pad))
     return padded_tensors
 
 
