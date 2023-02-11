@@ -33,7 +33,7 @@ class Neural_Network(nn.Module):
         return out
 
 def pad_tensors(tensors_list):
-    max_shape = max([t.shape for t in tensors_list], key=lambda x: x[1])
+    max_shape = max([tensor.shape for tensor in tensors_list])
     padded_tensors = []
     for tensor in tensors_list:
         padding = torch.zeros((tensor.shape[0], max_shape[1] - tensor.shape[1], tensor.shape[2]), dtype=torch.float32)
