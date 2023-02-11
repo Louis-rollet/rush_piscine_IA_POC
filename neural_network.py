@@ -43,10 +43,15 @@ def pad_tensors(tensors_list):
 
 
 def train(model, train_data, train_labels, optimizer, criterion, epochs):
-    padded_train_data = pad_tensors(train_data)
-    padded_train_labels = pad_tensors(train_labels)
-    train_data = torch.stack(padded_train_data, dim=0)
-    train_labels = torch.stack(padded_train_labels, dim=0)
+    for i in range(len(train_data)):
+        list = torch.tensor(train_data[i])
+        train_data[i] = list
+        list = torch.tensor(train_labels[i])
+        train_labels[i] = list
+    train_data = pad_tensors(train_data)
+    train_labels = pad_tensors(train_labels)
+    train_data = torch.stack(train_data, dim=0)
+    train_labels = torch.stack(train_data, dim=0)
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
