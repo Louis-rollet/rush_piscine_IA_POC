@@ -34,7 +34,11 @@ class Neural_Network(nn.Module):
 
 
 def train(model, train_data, train_labels, optimizer, criterion, epochs):
+    max_length = max(t.shape[2] for t in train_data)
+    train_data = [torch.nn.functional.pad(t, (0, 0, 0, max_length - t.shape[2])) for t in train_data]
     train_data = torch.stack(train_data, dim=0)
+    max_length = max(t.shape[2] for t in train_labels)
+    train_labels = [torch.nn.functional.pad(t, (0, 0, 0, max_length - t.shape[2])) for t in train_labels]
     train_labels = torch.stack(train_labels, dim=0)
     for epoch in range(epochs):
         model.train()
